@@ -2,6 +2,7 @@ package board;
 
 import java.util.ArrayList;
 import java.util.Scanner;
+
 import article.Article;
 import article.ArticleDao;
 import article.Reply;
@@ -47,34 +48,73 @@ public class App {
 	}
 
 	private void articleSearch() {
+
 		System.out.println("검색 항목을 선택해주세요 : ");
 		System.out.println("1. 제목, 2. 내용, 3. 제목 + 내용, 4. 작성자");
 		int ch = Integer.parseInt(sc.nextLine());
 
 		if (ch == 1) {
+
 			System.out.println("검색할 제목 키워드를 입력해주세요 : ");
 			String title = sc.nextLine();
-			articleDao.getArticleByTitle(title);
-			
+
+			printArticleByTitle(title);
+
 		} else if (ch == 2) {
+
 			System.out.println("검색할 내용 키워드를 입력해주세요 : ");
 			String body = sc.nextLine();
-			articleDao.getArticleByBody(body);
+
+			printArticleByBody(body);
 
 		} else if (ch == 3) {
+
 			System.out.println("검색할 제목과 내용 키워드를 입력해주세요 : ");
 			String title = sc.nextLine();
 			String body = sc.nextLine();
+
+			printArticleByBody(body);
 			articleDao.getArticleByTitleAndBody(title, body);
-			
 
 		} else if (ch == 4) {
+
 			System.out.println("검색할 작성자 키워드를 입력해주세요 : ");
-			String writer = sc.nextLine();
-			articleDao.getArticleByWriter(writer);
+			String nickname = sc.nextLine();
+
+			printArticleByBody(nickname);
+			articleDao.getArticleBynickname(nickname);
 		}
 	}
-	
+
+	public void printArticleByTitle(String title) {
+		Article article = articleDao.getArticleByTitle(title);
+
+		System.out.println("번호 : " + article.getId());
+		System.out.println("제목 : " + article.getTitle());
+		System.out.println("작성자 : " + article.getNickname());
+		System.out.println("등록날짜 : " + article.getRegDate());
+		System.out.println("조회수 : " + article.getHit());
+	}
+
+	public void printArticleByBody(String body) {
+		Article article = articleDao.getArticleByBody(body);
+
+		System.out.println("번호 : " + article.getId());
+		System.out.println("제목 : " + article.getTitle());
+		System.out.println("작성자 : " + article.getNickname());
+		System.out.println("등록날짜 : " + article.getRegDate());
+		System.out.println("조회수 : " + article.getHit());
+	}
+
+	public void getArticleBynickname(String nickname) {
+		Article article = articleDao.getArticleBynickname(nickname);
+
+		System.out.println("번호 : " + article.getId());
+		System.out.println("제목 : " + article.getTitle());
+		System.out.println("작성자 : " + article.getNickname());
+		System.out.println("등록날짜 : " + article.getRegDate());
+		System.out.println("조회수 : " + article.getHit());
+	}
 
 	public void login() {
 		System.out.print("아이디 : ");
@@ -165,7 +205,7 @@ public class App {
 
 	public void inputCommand() {
 		if (loginedMember == null) {
-			System.out.println("명령어를 입력해주세요.");
+			System.out.println("명령어를 입력해주세요. : ");
 		} else {
 
 			String loginedUserInfo = String.format("[%s(%s)]", loginedMember.getLoginId(), loginedMember.getNickname());
